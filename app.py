@@ -1,6 +1,6 @@
 from flask import *
 from flask_pymongo import PyMongo
-from flask_mongoengine import MongoEngine
+# from flask_mongoengine import MongoEngine
 import os
 
 from dotenv import load_dotenv
@@ -35,54 +35,96 @@ def dbUserSignUp(name, email, password):
             'email': email,
             'password': password
     })
-@app.route('/signup')
-def signup():
-   
-    dbUserSignUp('Keval', 'keval@gmail.com', 'pass')
+    if result == None:
+        return 0
+    else:
+        return 1
+
+@app.route('/check-candidate-signup', methods=['POST'])
+def check_candidate_signup():
+    if request.method == 'POST':
+        name = request.form['name'].strip()
+        email = request.form['email'].strip()
+        password = request.form['pass'].strip()
+        res = dbUserSignUp(name, email, password)
+        if res == 1:
+            return redirect(url_for('main'))
+        else:
+            return 'Login Failed'
 
 #User Login
 def dbUserLogin(your_name, your_pass):
-    result = mongo.db.users.insert_one({
-            'your_name': your_name,
-            'your_pass': your_pass,
-            
+    result = mongo.db.users.find_one({
+            'email': your_name,
+            'password': your_pass,
     })
+    if result is None:
+        return 0
+    else:
+        return 1
 
-@app.route('/login')
-def login():
-   
-    dbUserLogin('Keval', 'pass')
+@app.route('/check-candidate-login', methods=['POST'])
+def check_candidate_login():
+    if request.method == 'POST':
+        email = request.form['your_name'].strip()
+        password = request.form['your_pass'].strip()
+        res = dbUserLogin(email, password)
+        if res == 1:
+            return redirect(url_for('main'))
+        else:
+            return 'Login Failed'
      
 
 #Interviewer Login
 def dbIntLogin(your_name, your_pass):
-    result = mongo.db.users.insert_one({
-            'your_name': your_name,
-            'your_pass': your_pass,
-            
+    result = mongo.db.recruiters.find_one({
+            'email': your_name,
+            'password': your_pass,
     })
+    if result is None:
+        return 0
+    else:
+        return 1
 
-@app.route('/Intlogin')
-def Intlogin():
-   
-    dbIntLogin('Keval', 'pass')
-     
+@app.route('/check-recruiter-login', methods=['POST'])
+def check_recruiter_login():
+   if request.method == 'POST':
+        email = request.form['your_name'].strip()
+        password = request.form['your_pass'].strip()
+        res = dbIntLogin(email, password)
+        if res == 1:
+            return redirect(url_for('main'))
+        else:
+            return 'Login Failed'
+
 
 #Interviewer SignUp
 def dbIntSignUp(your_name,email,organization,position, your_pass):
-    result = mongo.db.users.insert_one({
+    result = mongo.db.recruiters.insert_one({
             'your_name': your_name,
             'email':email,
             'organization':organization,
             'position':position,
             'password':your_pass
-            
     })
+    if result is None:
+        return 0
+    else:
+        return 1
 
-@app.route('/IntSignUp')
-def IntSignUp():
-   
-    dbIntSignUp('Keval', 'keval@gmail.com', 'Google', 'Software Engineer', 'pass')
+@app.route('/check-recruiter-signup', methods=['POST'])
+def check_recruiter_signup():
+    if request.method == 'POST':
+        name = request.form['name'].strip()
+        email = request.form['email'].strip()
+        password = request.form['pass'].strip()
+        org = request.form['org'].strip()
+        pos = request.form['pos'].strip()
+        res = dbIntSignUp(name, email, org, pos, password)
+        if res == 1:
+            return redirect(url_for('main'))
+        else:
+            return 'Registration Failed'
 
 @app.route('/')
 def index():
@@ -108,6 +150,10 @@ def recruiter_signup():
 @app.route('/user_profile_form')
 def user_profile_form():
     return render_template('user_profile_form.html')
+
+@app.route('/main')
+def main():
+    return 'Main'
 
 if __name__ == '__main__':
     port = int(os.environ.get('PORT', 5000))
