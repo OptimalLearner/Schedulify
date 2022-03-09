@@ -147,13 +147,44 @@ def recruiter_login():
 def recruiter_signup():
     return render_template('recruiter_signup.html')
 
-@app.route('/user_profile_form')
+@app.route('/user-profile-form')
 def user_profile_form():
     return render_template('user_profile_form.html')
 
 @app.route('/main')
 def main():
     return 'Main'
+
+@app.route('/fetch-user-profile', methods=['POST'])
+def fetch_user_profile():
+    if request.method == 'POST':
+        name = request.form['full_name'].strip()
+        email=request.form['email'].strip()
+        phone = request.form['phone'].strip()
+        age = request.form['age'].strip()
+        address = request.form['address'].strip()
+
+        # appointment_date = db.Column(db.String(100))
+        degree = request.form['qualification'].strip()
+        college = request.form['college'].strip()
+        clg_time = request.form['duration'].strip()
+        cgpa = request.form['cgpa'].strip()
+        cmpy_name = request.form['company_name'].strip()
+        cmpy_position = request.form['position'].strip()
+        cmpy_time = request.form['duration_exp'].strip()
+        cmpy_work = request.form['work'].strip()
+        skills_1 = request.form['skill1'].strip()
+        skills_2 = request.form['skill2'].strip()
+        skills_3 = request.form['skill3'].strip()
+        skills_4 = request.form['skill4'].strip()
+        skills_5 = request.form['skill5'].strip()
+
+        #print(skills_1, skills_2, name, email)
+        return '1'
+
+@app.route('/user-display')
+def user_display():
+    return render_template('user_profile.html')
 
 if __name__ == '__main__':
     port = int(os.environ.get('PORT', 5000))

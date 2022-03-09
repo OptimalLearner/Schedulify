@@ -7,9 +7,7 @@ let preloader = document.getElementById('preloader-wrapper');
 let bodyElement = document.querySelector('body');
 let succcessDiv = document.getElementById('success');
 
-form.onsubmit = () => {
-    return false
-}
+
 let current_step = 0;
 let stepCount = 4
 step[current_step].classList.add('d-block');
