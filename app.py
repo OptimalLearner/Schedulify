@@ -20,6 +20,18 @@ def index():
 def candidate_login():
     return render_template('candidate_login.html')
 
+@app.route('/candidate-signup')
+def candidate_signup():
+    return render_template('candidate_signup.html')
+
+@app.route('/recruiter-login')
+def recruiter_login():
+    return render_template('recruiter_login.html')
+
+@app.route('/recruiter-signup')
+def recruiter_signup():
+    return render_template('recruiter_signup.html')
+
 if __name__ == '__main__':
     port = int(os.environ.get('PORT', 5000))
     app.run(host='0.0.0.0', port=port, debug=True)
