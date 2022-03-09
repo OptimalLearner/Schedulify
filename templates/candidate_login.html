@@ -17,6 +17,7 @@
 </head>
 
 <body>
+    
     <div class="main">
 
         <section class="sign-in" style="height: 100vh;">
@@ -45,7 +46,7 @@
                             <div class="form-group form-button">
                                 <input type="button" name="signin" id="signin" class="form-submit" value="Log in" />
                             </div>
-                            <a href="#" class="signup-image-link">Create an account</a>
+                            <a href="{{ url_for('candidate_signup') }}" class="signup-image-link">Create an account</a>
                         </form>
                     </div>
                 </div>
@@ -55,6 +56,7 @@
     </div>
 
     <!-- JS -->
+   
     <script src="{{ url_for('static', filename='js/login_signup_main.js') }}"></script>
 </body>
 </html>

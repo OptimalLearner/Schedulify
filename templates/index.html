@@ -48,7 +48,7 @@
           <li><a class="nav-link scrollto" href="#team">Team</a></li>
           <li><a class="nav-link scrollto" href="#contact">Contact</a></li>
           <li><a class="getstarted scrollto" href="{{ url_for('candidate_login') }}">For Candidates</a></li>
-          <li><a class="getstarted scrollto" href="#about">For Recruiters</a></li>
+          <li><a class="getstarted scrollto" href="{{ url_for('recruiter_login') }}">For Recruiters</a></li>
         </ul>
         <i class="bi bi-list mobile-nav-toggle"></i>
       </nav><!-- .navbar -->
@@ -437,6 +437,7 @@
 
   <!-- Template Main JS File -->
   <script src="{{ url_for('static', filename='js/index_main.js') }}"></script>
+
   
 
 </body>
