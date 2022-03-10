@@ -8,6 +8,8 @@
   <title> Schedulify </title>
   <meta content="" name="description">
   <meta content="" name="keywords">
+  <!-- Manifest.json -->
+  <link rel="manifest" href="{{ url_for('static', filename='manifest.json') }}">
 
   <!-- Favicons -->
   <link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico') }}" />
@@ -439,6 +441,18 @@
   <script src="{{ url_for('static', filename='js/index_main.js') }}"></script>
 
   
+  <!-- Service Worker -->
+  <script type="text/javascript">
+    if ('serviceWorker' in navigator) {
+        window.addEventListener('load', function() {
+            navigator.serviceWorker.register("../service-worker.js").then(function(registration) {
+                console.log('ServiceWorker registration successful with scope: ', registration.scope);
+            }, function(err) {
+                console.log('ServiceWorker registration failed: ', err);
+            });
+        });
+    }
+</script>
 
 </body>
 

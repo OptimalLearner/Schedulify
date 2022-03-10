@@ -99,7 +99,7 @@ def check_recruiter_login():
         res = dbIntLogin(email, password)
         if res == 1:
             session['recruiter'] = email
-            return redirect(url_for('main'))
+            return redirect(url_for('employee_main'))
         else:
             return 'Login Failed'
 
@@ -137,6 +137,9 @@ def check_recruiter_signup():
 def index():
     return render_template('index.html')
 
+@app.route('/service-worker.js', methods=['GET'])
+def sw():
+    return app.send_static_file('service-worker.js')
 
 @app.route('/candidate-login')
 def candidate_login():

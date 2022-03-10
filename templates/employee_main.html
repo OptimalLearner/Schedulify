@@ -82,16 +82,16 @@
 
       {% if text == 'User List' %}
         <div class="info d-flex justify-content-center align-items-center flex-column">
-          <a class="btn" href="{{ url_for('employeee_main') }}"> Get Shortlisted Candidates </a>
+          <a class="btn btn-primary mb-3" href="{{ url_for('employeee_main') }}"> Get Shortlisted Candidates </a>
         </div>
       {% else %}
       <div class="info d-flex justify-content-center align-items-center flex-column">
-        <a class="btn" href="{{ url_for('schedule_meeting') }}"> Schedule Meeting </a>
+        <a class="btn btn-primary mb-3" href="{{ url_for('schedule_meeting') }}"> Schedule Meeting </a>
       </div>
       {% endif %}
 
     <!-- ======= Footer ======= -->
-    <footer id="footer" class="fixed-bottom">
+    <footer id="footer">
         <div class="container">
           <div class="row d-flex align-items-center">
             <div class="col-lg-6 text-lg-left text-center">

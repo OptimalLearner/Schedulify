@@ -1,0 +1,32 @@
+{
+    "name": "Schedulify",
+    "short_name": "SCH",
+    "theme_color": "#3498db",
+    "background_color": "#FFF",
+    "icons": [
+        {
+          "src": "favicon-16x16.png",
+          "type": "image/png",
+          "sizes": "16x16"
+        },
+        {
+          "src": "favicon-32x32.png",
+          "type": "image/png",
+          "sizes": "32x32"
+        },
+        {
+          "src": "android-chrome-192x192.png",
+          "type": "image/png",
+          "sizes": "192x192"
+        },
+        {
+          "src": "android-chrome-512x512.png",
+          "type": "image/png",
+          "sizes": "512x512"
+        }
+    ],
+    "lang": "en-US",
+    "start_url": "/",
+    "display": "standalone",
+    "orientation": "portrait"
+  }
