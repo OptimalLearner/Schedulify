@@ -1,28 +1,31 @@
 from flask import *
 from flask_pymongo import PyMongo
+from flask_sqlalchemy import  SQLAlchemy
+from bson.objectid import ObjectId
 # from flask_mongoengine import MongoEngine
 import os
 
 from dotenv import load_dotenv
 load_dotenv() # loads the environment variables
 
+from models import *
+
+DB_NAME = "database.db"
+
 app = Flask(__name__)
 
-# app.config['MONGODB_SETTINGS'] = {
-#     'db': 'schedulify',
-#     'host': 'localhost',
-#     'port': 27017
-# }
-# db = PyMongo(app)
-
-# class User(db.Document):
-#     name = db.StringField()
-#     email = db.StringField()
-#     def to_json(self):
-#         return {"name": self.name,
-#                 "email": self.email}
+app.config['SQLALCHEMY_DATABASE_URI'] = f'sqlite:///{DB_NAME}'
 
 app.secret_key = os.environ.get('SECRET_KEY')
+
+db = SQLAlchemy(app)
+
+def create_database(app):
+    if not path.exists(DB_NAME):
+        db.create_all(app=app)
+        print("Created Database")
+    else:
+        print('already present')
 
 
 app.config["MONGO_URI"] = f'mongodb://localhost:27017/schedulify'
@@ -48,7 +51,8 @@ def check_candidate_signup():
         password = request.form['pass'].strip()
         res = dbUserSignUp(name, email, password)
         if res == 1:
-            return redirect(url_for('main'))
+            session['user'] = email
+            return redirect(url_for('user_profile_form'))
         else:
             return 'Login Failed'
 
@@ -70,6 +74,7 @@ def check_candidate_login():
         password = request.form['your_pass'].strip()
         res = dbUserLogin(email, password)
         if res == 1:
+            session['user'] = email
             return redirect(url_for('main'))
         else:
             return 'Login Failed'
@@ -93,6 +98,7 @@ def check_recruiter_login():
         password = request.form['your_pass'].strip()
         res = dbIntLogin(email, password)
         if res == 1:
+            session['recruiter'] = email
             return redirect(url_for('main'))
         else:
             return 'Login Failed'
@@ -122,7 +128,8 @@ def check_recruiter_signup():
         pos = request.form['pos'].strip()
         res = dbIntSignUp(name, email, org, pos, password)
         if res == 1:
-            return redirect(url_for('main'))
+            session['user'] = email
+            return redirect(url_for('employee_main'))
         else:
             return 'Registration Failed'
 
@@ -153,7 +160,7 @@ def user_profile_form():
 
 @app.route('/main')
 def main():
-    return 'Main'
+    return redirect(url_for('user_display'))
 
 @app.route('/fetch-user-profile', methods=['POST'])
 def fetch_user_profile():
@@ -179,12 +186,45 @@ def fetch_user_profile():
         skills_4 = request.form['skill4'].strip()
         skills_5 = request.form['skill5'].strip()
 
-        #print(skills_1, skills_2, name, email)
-        return '1'
+        user = mongo.db.users.find_one({'email': email})
+        if user is None:
+            print('user not present')
+            flash('Email are not same. ', category='error')
+        else:
+            new_appoint = User_Info(name=name, email=email, phone=phone, age=age,address=address,degree=degree, college=college, clg_time=clg_time,  cgpa=cgpa, cmpy_name=cmpy_name, cmpy_position=cmpy_position,  cmpy_time=cmpy_time,  cmpy_work=cmpy_work, skills_1 =skills_1,skills_2 =skills_2 ,skills_3 =skills_3,skills_4 =skills_4,skills_5 =skills_5,user_id=str(user['_id']))
+            db.session.add(new_appoint)
+            db.session.commit()
+            print('data added')
+            return redirect(url_for('user_display'))
+        return render_template("user_profile_form.html")
 
 @app.route('/user-display')
 def user_display():
-    return render_template('user_profile.html')
+    user = session['user']
+    if user is not None:
+        data = User_Info.query.filter_by(email=user).first()
+        return render_template('user_profile.html', data=data)
+
+def get_shortlisted():
+    import random
+    res = User_Info.query.all()
+    res2 = res[:]
+    random.shuffle(res)
+    return [res2, res]
+
+@app.route('/employee-main')
+def employee_main():
+    res, res2 = get_shortlisted()
+    return render_template('employee_main.html', text='User List', data=res)
+
+@app.route('/employeee-main')
+def employeee_main():
+    res, res2 = get_shortlisted()
+    return render_template('employee_main.html', text='Shortlisted Candidates', data=res2)
+
+@app.route('/schedule-meeting')
+def schedule_meeting():
+    return render_template('schedule.html')
 
 if __name__ == '__main__':
     port = int(os.environ.get('PORT', 5000))
