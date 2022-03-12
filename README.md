@@ -1,11 +1,12 @@
 # Schedulify
 Interview scheduling is time-consuming and taxing. It requires a set of people or a trained person/secretary to do it, since multiple people such as interviewers/hiring managers, recruiters and candidates have to be taken into consideration.  
-We built a web based solution **Schedulify** that will help with scheduling interviews effortlessly faster, saving time.
+We built a progressive web application **Schedulify** that will help with scheduling interviews effortlessly faster, saving time.  
+Made as a part of TSEC Hacks 2022 Hackathon.
 
 **Tech Stack Used:** HTML5, CSS, JavaScript, Bootstrap 5, Flask  
 **Database Used:** MongoDB, SQLAlchemy  
 **Vector Illustrations:** Some vector illustrations used in this project are taken from [undraw.co](https://undraw.co/)  
-**API Used:** Calendy used Easy Scheduling
+**API Used:** Calendy used for Easy Scheduling
 
 ## Steps to run the app locally
 * Install your desired version of [Python](https://www.python.org/downloads/) on your local system if not installed already.
